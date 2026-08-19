@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCO Trade Solutions</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24' fill='none' stroke='%230066FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20'/%3E%3Cpath d='M2 12h20'/%3E%3C/svg%3E" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS (via CDN for local execution) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#0066FF',
+                            dark: '#0F1C35',
+                            light: '#38BDF8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS for Animations & Interactions -->
+    <style>
+        /* Base Animation Classes */
+        .reveal {
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translate(0, 0) scale(1);
+        }
+
+        /* Specific Animation Directions */
+        .reveal-up {
+            transform: translateY(30px);
+        }
+
+        .reveal-left {
+            transform: translateX(-30px);
+        }
+
+        .reveal-right {
+            transform: translateX(30px);
+        }
+
+        .reveal-scale {
+            transform: scale(0.95);
+        }
+
+        /* Delays */
+        .delay-100 {
+            transition-delay: 100ms;
+        }
+
+        .delay-200 {
+            transition-delay: 200ms;
+        }
+
+        .delay-300 {
+            transition-delay: 300ms;
+        }
+
+        .delay-400 {
+            transition-delay: 400ms;
+        }
+
+        .delay-600 {
+            transition-delay: 600ms;
+        }
+
+        .delay-800 {
+            transition-delay: 800ms;
+        }
+
+        /* Accordion transition */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            opacity: 0;
+        }
+
+        .accordion-content.expanded {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-slate-900 antialiased font-sans">
+
+    <!-- ================= NAVBAR ================= -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="#" class="flex items-center gap-2">
+                    <div class="text-[#0066FF]">
+                        <i data-lucide="globe" class="w-8 h-8"></i>
+                    </div>
+                    <span class="font-heading font-bold text-xl text-white tracking-tight" id="logo-text">
+                        ASCO <span class="text-[#0066FF]">Trade Solutions</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Nav -->
+                <nav aria-label="Main Navigation" class="hidden md:flex items-center gap-8">
+                    <a href="#about"
+                        class="nav-link text-sm font-medium text-slate-300 hover:text-[#38BDF8] transition-colors">About</a>
+                    <a href="#services"
+                        class="nav-link text-sm font-medium text-slate-300 hover:text-[#38BDF8] transition-colors">Services</a>
+                    <a href="#categories"
+                        class="nav-link text-sm font-medium text-slate-300 hover:text-[#38BDF8] transition-colors">Products</a>
+                    <a href="#contact"
+                        class="nav-link text-sm font-medium text-slate-300 hover:text-[#38BDF8] transition-colors">Contact</a>
+                    <a href="#contact"
+                        class="rounded-full py-2.5 px-6 font-semibold bg-[#0066FF] hover:bg-[#2563EB] text-white shadow-[0_0_20px_rgba(0,102,255,0.35)] transition-all duration-300 transform hover:-translate-y-0.5 text-sm">
+                        Request a Quote
+                    </a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-white transition-colors">
+                    <i data-lucide="menu" class="w-6 h-6 menu-icon"></i>
+                    <i data-lucide="x" class="w-6 h-6 close-icon hidden"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 overflow-hidden">
+            <div class="px-4 py-6 flex flex-col gap-4">
+                <a href="#about" class="mobile-link text-base font-medium text-slate-600 hover:text-[#0066FF]">About</a>
+                <a href="#services"
+                    class="mobile-link text-base font-medium text-slate-600 hover:text-[#0066FF]">Services</a>
+                <a href="#categories"
+                    class="mobile-link text-base font-medium text-slate-600 hover:text-[#0066FF]">Products</a>
+                <a href="#contact"
+                    class="mobile-link text-base font-medium text-slate-600 hover:text-[#0066FF]">Contact</a>
+                <a href="#contact"
+                    class="mobile-link rounded-full py-3 px-6 font-semibold bg-[#0066FF] text-white text-center mt-4">
+                    Request a Quote
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= HERO ================= -->
+    <section id="hero"
+        class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 bg-[#0F1C35] overflow-hidden min-h-screen flex items-center">
+        <!-- Radial Gradient Glow -->
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-600/20 via-slate-900/0 to-transparent pointer-events-none rounded-full blur-3xl opacity-50">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+
+                <div class="reveal reveal-up flex flex-col items-start gap-6">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[#38BDF8] text-sm font-medium">
+                        <span class="w-2 h-2 rounded-full bg-[#38BDF8] animate-pulse"></span>
+                        China to Your Doorstep Sourcing
+                    </div>
+
+                    <h1
+                        class="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight text-balance">
+                        Sourcing Made <br class="hidden sm:block" />
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#38BDF8] to-[#0066FF]">Simple,
+                            Reliable</span>,<br class="hidden sm:block" />
+                        and Direct.
+                    </h1>
+
+                    <p class="text-lg text-slate-300 max-w-xl">
+                        Premium manufacturing from China delivered straight to your doorstep worldwide—with strict
+                        quality
+                        assurance at every step.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-4 pt-4">
+                        <a href="#contact"
+                            class="rounded-full py-3.5 px-8 font-semibold bg-[#0066FF] hover:bg-[#2563EB] text-white shadow-[0_0_20px_rgba(0,102,255,0.35)] transition-all duration-300 transform hover:-translate-y-0.5 flex items-center gap-2">
+                            Get Started <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#contact"
+                            class="rounded-full py-3.5 px-8 font-semibold bg-white/5 hover:bg-white/10 text-white border border-white/10 transition-all duration-300">
+                            Request a Quote
+                        </a>
+                    </div>
+                </div>
+
+                <div class="reveal reveal-scale delay-200 relative lg:ml-auto">
+                    <!-- Image Container with Glow -->
+                    <div
+                        class="relative rounded-3xl overflow-hidden border border-[#0066FF]/30 shadow-[0_0_40px_rgba(0,102,255,0.15)] aspect-[4/3] max-w-[600px]">
+                        <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                            alt="Large cargo vessel representing international sea freight and global logistics"
+                            class="w-full h-full object-cover" />
+                        <div
+                            class="absolute inset-0 bg-gradient-to-tr from-[#0F1C35]/80 via-transparent to-transparent mix-blend-multiply">
+                        </div>
+                    </div>
+
+                    <!-- Floating Metric Chips -->
+                    <div
+                        class="reveal reveal-left delay-600 absolute -bottom-4 left-4 sm:bottom-12 sm:-left-12 bg-[#0F1C35]/95 backdrop-blur-md border border-slate-700 p-3 sm:p-4 rounded-xl sm:rounded-2xl flex items-center gap-3 sm:gap-4 shadow-xl z-20">
+                        <div class="bg-[#0066FF]/20 p-2 sm:p-3 rounded-full text-[#38BDF8]">
+                            <i data-lucide="trending-up" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-xl sm:text-2xl font-bold text-white">150+</p>
+                            <p class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-wider font-medium">Trade
+                                Clients</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="reveal reveal-right delay-800 absolute -top-4 right-4 sm:top-12 sm:-right-8 bg-[#0F1C35]/95 backdrop-blur-md border border-slate-700 p-3 sm:p-4 rounded-xl sm:rounded-2xl flex items-center gap-3 sm:gap-4 shadow-xl z-20">
+                        <div class="bg-[#0066FF]/20 p-2 sm:p-3 rounded-full text-[#38BDF8]">
+                            <i data-lucide="shield-check" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-base sm:text-lg font-bold text-white">100% QC</p>
+                            <p class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-wider font-medium">
+                                Pre-Shipment</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section id="about" class="py-24 bg-white overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+                <div class="reveal reveal-left relative">
+                    <div class="absolute -inset-4 bg-blue-50 rounded-3xl -z-10 transform -rotate-3"></div>
+                    <div class="rounded-2xl overflow-hidden aspect-[4/3] shadow-lg relative border border-slate-100">
+                        <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80"
+                            alt="Quality control inspection in manufacturing facility representing ASCO Trade Solutions end-to-end control"
+                            loading="lazy" class="w-full h-full object-cover" />
+                    </div>
+
+                    <div
+                        class="reveal reveal-up delay-300 absolute -bottom-8 -right-8 bg-white p-6 rounded-2xl shadow-xl border border-slate-100 hidden sm:block max-w-xs">
+                        <div class="flex items-start gap-4">
+                            <div class="bg-[#0066FF]/10 p-3 rounded-full text-[#0066FF] shrink-0">
+                                <i data-lucide="shield-check" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">End-to-End Control</h4>
+                                <p class="text-sm text-slate-600 mt-1">From factory floor directly to your door.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal reveal-right flex flex-col justify-center">
+                    <div
+                        class="inline-block px-3 py-1 mb-6 rounded-full bg-blue-50 text-[#0066FF] text-sm font-semibold tracking-wide w-max">
+                        ABOUT ASCO
+                    </div>
+
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight">
+                        Navigating international supply chains shouldn’t be complicated.
+                    </h2>
+
+                    <p class="text-lg text-slate-600 mb-8 leading-relaxed">
+                        At ASCO Trade Solutions, we bridge the gap between world-class Chinese manufacturers and global
+                        businesses and homeowners. We handle vetting, quality inspection, and freight
+                        end-to-end—delivering quality without compromise.
+                    </p>
+
+                    <div class="grid sm:grid-cols-2 gap-6 mb-8">
+                        <div class="flex flex-col gap-2">
+                            <i data-lucide="globe" class="w-8 h-8 text-[#0066FF]"></i>
+                            <h4 class="font-bold text-slate-900">Direct Sourcing</h4>
+                            <p class="text-sm text-slate-600">From China to your doorstep.</p>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <i data-lucide="truck" class="w-8 h-8 text-[#0066FF]"></i>
+                            <h4 class="font-bold text-slate-900">Logistics Managed</h4>
+                            <p class="text-sm text-slate-600">Customs, freight, and transport.</p>
+                        </div>
+                    </div>
+
+                    <a href="#services"
+                        class="inline-flex items-center gap-2 text-[#0066FF] font-semibold group/link w-max">
+                        Explore Our Process
+                        <span class="transform transition-transform group-hover/link:translate-x-1">
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= SERVICES ================= -->
+    <section id="services" class="py-24 bg-[#EFF6FF]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <div
+                    class="reveal reveal-up inline-block px-3 py-1 mb-4 rounded-full bg-blue-100 text-[#0066FF] text-sm font-semibold tracking-wide">
+                    OUR CAPABILITIES
+                </div>
+                <h2 class="reveal reveal-up delay-100 font-heading text-3xl md:text-4xl font-bold text-slate-900">
+                    Engineered For Global Trade Efficiency
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div
+                    class="reveal reveal-up bg-white rounded-3xl p-8 border border-blue-50 hover:border-blue-100 shadow-sm hover:shadow-xl transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110 opacity-50">
+                    </div>
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-blue-50 text-[#0066FF] flex items-center justify-center mb-6 group-hover:bg-[#0066FF] group-hover:text-white transition-colors duration-300">
+                        <i data-lucide="search" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-900 mb-3">Expert Factory Sourcing</h3>
+                    <p class="text-slate-600 leading-relaxed mb-6">
+                        We evaluate and partner directly with top-tier manufacturers in China to secure premium
+                        materials and competitive pricing tailored to your exact specifications.
+                    </p>
+                    <a href="#contact" class="inline-flex items-center gap-2 text-[#0066FF] font-semibold group/link">
+                        Learn More
+                        <span class="transform transition-transform group-hover/link:translate-x-1">→</span>
+                    </a>
+                </div>
+
+                <!-- Service 2 -->
+                <div
+                    class="reveal reveal-up delay-100 bg-white rounded-3xl p-8 border border-blue-50 hover:border-blue-100 shadow-sm hover:shadow-xl transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110 opacity-50">
+                    </div>
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-blue-50 text-[#0066FF] flex items-center justify-center mb-6 group-hover:bg-[#0066FF] group-hover:text-white transition-colors duration-300">
+                        <i data-lucide="check-circle" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-900 mb-3">Rigorous Quality Assurance</h3>
+                    <p class="text-slate-600 leading-relaxed mb-6">
+                        Every order undergoes on-site inspection and testing to guarantee full compliance with global
+                        standards before it ever leaves the factory floor.
+                    </p>
+                    <a href="#contact" class="inline-flex items-center gap-2 text-[#0066FF] font-semibold group/link">
+                        Learn More
+                        <span class="transform transition-transform group-hover/link:translate-x-1">→</span>
+                    </a>
+                </div>
+
+                <!-- Service 3 -->
+                <div
+                    class="reveal reveal-up delay-200 bg-white rounded-3xl p-8 border border-blue-50 hover:border-blue-100 shadow-sm hover:shadow-xl transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110 opacity-50">
+                    </div>
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-blue-50 text-[#0066FF] flex items-center justify-center mb-6 group-hover:bg-[#0066FF] group-hover:text-white transition-colors duration-300">
+                        <i data-lucide="ship" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-900 mb-3">Seamless Nationwide Delivery</h3>
+                    <p class="text-slate-600 leading-relaxed mb-6">
+                        From international sea/air freight and customs clearance to final-mile transport, we manage all
+                        logistics for hassle-free delivery directly to your door.
+                    </p>
+                    <a href="#contact" class="inline-flex items-center gap-2 text-[#0066FF] font-semibold group/link">
+                        Learn More
+                        <span class="transform transition-transform group-hover/link:translate-x-1">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= CATEGORIES ================= -->
+    <section id="categories" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div class="max-w-2xl">
+                    <h2
+                        class="reveal reveal-up font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-4 text-balance">
+                        Product Focus & Portfolio
+                    </h2>
+                    <p class="reveal reveal-up delay-100 text-lg text-slate-600">
+                        We source and deliver across specialized categories, ensuring uncompromised quality and exact
+                        specifications.
+                    </p>
+                </div>
+                <div class="reveal reveal-right">
+                    <a href="#contact"
+                        class="hidden md:inline-flex items-center gap-2 text-[#0066FF] font-semibold hover:text-[#2563EB] transition-colors">
+                        Discuss a Project →
+                    </a>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Category 1 -->
+                <div class="reveal reveal-scale group cursor-pointer">
+                    <div class="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 border border-slate-100">
+                        <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/5 transition-colors z-10">
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80"
+                            alt="Custom Window Treatments" loading="lazy"
+                            class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105" />
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-900 mb-1">Custom Window Treatments</h3>
+                    <p class="text-sm text-slate-500 mb-3">Premium plantation shutters, precision blinds, and
+                        custom-tailored curtains crafted to elevate any space.</p>
+                    <span
+                        class="text-[#0066FF] font-medium text-sm inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        Bulk Inquiry →
+                    </span>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="reveal reveal-scale delay-100 group cursor-pointer">
+                    <div class="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 border border-slate-100">
+                        <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/5 transition-colors z-10">
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=800&q=80"
+                            alt="Furniture & Interior Decor" loading="lazy"
+                            class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105" />
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-900 mb-1">Furniture & Interior Decor</h3>
+                    <p class="text-sm text-slate-500 mb-3">High-end, durable residential and commercial furniture
+                        sourced to balance design, comfort, and longevity.</p>
+                    <span
+                        class="text-[#0066FF] font-medium text-sm inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        Bulk Inquiry →
+                    </span>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="reveal reveal-scale delay-200 group cursor-pointer">
+                    <div class="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 border border-slate-100">
+                        <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/5 transition-colors z-10">
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=800&q=80"
+                            alt="Specialized Procurement" loading="lazy"
+                            class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105" />
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-900 mb-1">Specialized Procurement</h3>
+                    <p class="text-sm text-slate-500 mb-3">Custom manufacturing and bespoke sourcing solutions built to
+                        your project's technical requirements.</p>
+                    <span
+                        class="text-[#0066FF] font-medium text-sm inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        Bulk Inquiry →
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PROCESS ================= -->
+    <section id="process" class="py-24 bg-[#0F1C35] border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-start">
+
+                <div class="lg:sticky lg:top-32 mb-10 lg:mb-0">
+                    <div
+                        class="reveal reveal-up inline-block px-3 py-1 mb-4 rounded-full bg-blue-500/10 border border-blue-500/20 text-[#38BDF8] text-sm font-medium">
+                        HOW IT WORKS
+                    </div>
+                    <h2
+                        class="reveal reveal-up delay-100 font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 leading-tight text-balance">
+                        A Transparent Roadmap to <span class="text-[#38BDF8]">Frictionless Trade</span>.
+                    </h2>
+                    <p class="reveal reveal-up delay-200 text-slate-400 text-lg leading-relaxed">
+                        We de-risk global sourcing by applying rigorous systems at every node of the supply chain. From
+                        the factory floor to your front door, our process is built on clarity, accountability, and
+                        speed.
+                    </p>
+                </div>
+
+                <div class="space-y-4" id="accordion-container">
+                    <!-- Step 1 -->
+                    <div
+                        class="reveal reveal-right accordion-item border border-[#0066FF]/50 bg-blue-900/10 rounded-2xl transition-colors duration-300 overflow-hidden">
+                        <button class="w-full flex items-center justify-between p-6 text-left focus:outline-none">
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm font-bold font-mono text-[#38BDF8] step-num">01</span>
+                                <h3 class="font-heading text-lg font-semibold text-white step-title">Supplier Vetting
+                                </h3>
+                            </div>
+                            <i data-lucide="chevron-down"
+                                class="w-5 h-5 transition-transform duration-300 rotate-180 text-[#38BDF8] chevron-icon"></i>
+                        </button>
+                        <div class="accordion-content expanded" style="max-height: 500px;">
+                            <div
+                                class="px-6 pb-6 pt-0 ml-10 text-slate-400 leading-relaxed border-t border-white/5 mt-2">
+                                <p class="pt-4">We identify and audit top-tier manufacturers globally, ensuring
+                                    compliance with local regulations and assessing production capacity, financial
+                                    health, and ethical standards.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div
+                        class="reveal reveal-right delay-100 accordion-item border border-slate-800 bg-slate-900/30 hover:border-slate-700 rounded-2xl transition-colors duration-300 overflow-hidden">
+                        <button class="w-full flex items-center justify-between p-6 text-left focus:outline-none">
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm font-bold font-mono text-slate-500 step-num">02</span>
+                                <h3 class="font-heading text-lg font-semibold text-slate-300 step-title">Production
+                                    Negotiation</h3>
+                            </div>
+                            <i data-lucide="chevron-down"
+                                class="w-5 h-5 transition-transform duration-300 text-slate-500 chevron-icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div
+                                class="px-6 pb-6 pt-0 ml-10 text-slate-400 leading-relaxed border-t border-white/5 mt-2">
+                                <p class="pt-4">Our team leverages local market knowledge and volume purchasing power to
+                                    negotiate favorable terms, pricing, and precise production schedules directly with
+                                    factory management.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div
+                        class="reveal reveal-right delay-200 accordion-item border border-slate-800 bg-slate-900/30 hover:border-slate-700 rounded-2xl transition-colors duration-300 overflow-hidden">
+                        <button class="w-full flex items-center justify-between p-6 text-left focus:outline-none">
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm font-bold font-mono text-slate-500 step-num">03</span>
+                                <h3 class="font-heading text-lg font-semibold text-slate-300 step-title">Lab QC &
+                                    Inspection</h3>
+                            </div>
+                            <i data-lucide="chevron-down"
+                                class="w-5 h-5 transition-transform duration-300 text-slate-500 chevron-icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div
+                                class="px-6 pb-6 pt-0 ml-10 text-slate-400 leading-relaxed border-t border-white/5 mt-2">
+                                <p class="pt-4">Before any container leaves the facility, our independent quality
+                                    assurance teams perform rigorous on-site inspections and arrange necessary
+                                    laboratory material certifications.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div
+                        class="reveal reveal-right delay-300 accordion-item border border-slate-800 bg-slate-900/30 hover:border-slate-700 rounded-2xl transition-colors duration-300 overflow-hidden">
+                        <button class="w-full flex items-center justify-between p-6 text-left focus:outline-none">
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm font-bold font-mono text-slate-500 step-num">04</span>
+                                <h3 class="font-heading text-lg font-semibold text-slate-300 step-title">Freight
+                                    Logistics</h3>
+                            </div>
+                            <i data-lucide="chevron-down"
+                                class="w-5 h-5 transition-transform duration-300 text-slate-500 chevron-icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div
+                                class="px-6 pb-6 pt-0 ml-10 text-slate-400 leading-relaxed border-t border-white/5 mt-2">
+                                <p class="pt-4">We manage the entire multi-modal transit process. From securing ocean
+                                    freight space to arranging customs clearance and port drayage, your shipment is
+                                    tracked at every milestone.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div
+                        class="reveal reveal-right delay-400 accordion-item border border-slate-800 bg-slate-900/30 hover:border-slate-700 rounded-2xl transition-colors duration-300 overflow-hidden">
+                        <button class="w-full flex items-center justify-between p-6 text-left focus:outline-none">
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm font-bold font-mono text-slate-500 step-num">05</span>
+                                <h3 class="font-heading text-lg font-semibold text-slate-300 step-title">Final Handover
+                                </h3>
+                            </div>
+                            <i data-lucide="chevron-down"
+                                class="w-5 h-5 transition-transform duration-300 text-slate-500 chevron-icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div
+                                class="px-6 pb-6 pt-0 ml-10 text-slate-400 leading-relaxed border-t border-white/5 mt-2">
+                                <p class="pt-4">Direct delivery to your warehouse or job site. We handle all final mile
+                                    logistics and documentation, providing a seamless end-to-end procurement experience.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= TESTIMONIALS ================= -->
+    <section class="py-24 bg-[#EFF6FF]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <div
+                    class="reveal reveal-up inline-block px-3 py-1 mb-4 rounded-full bg-blue-100 text-[#0066FF] text-sm font-semibold tracking-wide">
+                    CLIENT TESTIMONIALS
+                </div>
+                <h2 class="reveal reveal-up delay-100 font-heading text-3xl md:text-4xl font-bold text-slate-900">
+                    Trusted by Global Businesses
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Testimonial 1 -->
+                <div
+                    class="reveal reveal-up bg-white rounded-3xl p-10 border border-blue-50 shadow-sm relative overflow-hidden">
+                    <i data-lucide="quote" class="absolute right-6 top-6 w-16 h-16 text-blue-50 -z-0"></i>
+                    <div class="flex gap-1 mb-6 relative z-10">
+                        <i data-lucide="star" class="w-5 h-5 fill-yellow-400 text-yellow-400"></i>
+                        <i data-lucide="star" class="w-5 h-5 fill-yellow-400 text-yellow-400"></i>
+                        <i data-lucide="star" class="w-5 h-5 fill-yellow-400 text-yellow-400"></i>
+                        <i data-lucide="star" class="w-5 h-5 fill-yellow-400 text-yellow-400"></i>
+                        <i data-lucide="star" class="w-5 h-5 fill-yellow-400 text-yellow-400"></i>
+                    </div>
+                    <p class="text-lg text-slate-700 italic leading-relaxed mb-8 relative z-10">
+                        "ASCO Trade Solutions made sourcing from China completely effortless and reliable. They
+                        eliminated the guesswork and delivered exactly what we needed."
+                    </p>
+                    <div class="flex items-center gap-4 relative z-10">
+                        <div
+                            class="w-10 h-10 rounded-full bg-blue-100 text-[#0066FF] flex items-center justify-center font-bold font-heading">
+                            J
+                        </div>
+                        <h4 class="font-bold text-slate-900">J. Lee</h4>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div
+                    class="reveal reveal-up delay-100 bg-white rounded-3xl p-10 border border-blue-50 shadow-sm relative overflow-hidden">
+                    <i data-lucide="quote" class="absolute right-6 top-6 w-16 h-16 text-blue-50 -z-0"></i>
+                    <div class="flex gap-1 mb-6 relative z-10">
+                        <i data-lucide="star" class="w-5 h-5 fill-yellow-400 text-yellow-400"></i>
+                        <i data-lucide="star" class="w-5 h-5 fill-yellow-400 text-yellow-400"></i>
+                        <i data-lucide="star" class="w-5 h-5 fill-yellow-400 text-yellow-400"></i>
+                        <i data-lucide="star" class="w-5 h-5 fill-yellow-400 text-yellow-400"></i>
+                        <i data-lucide="star" class="w-5 h-5 fill-yellow-400 text-yellow-400"></i>
+                    </div>
+                    <p class="text-lg text-slate-700 italic leading-relaxed mb-8 relative z-10">
+                        "Consistent quality and delivered on schedule, every single time. A truly dependable sourcing
+                        partner for our business."
+                    </p>
+                    <div class="flex items-center gap-4 relative z-10">
+                        <div
+                            class="w-10 h-10 rounded-full bg-blue-100 text-[#0066FF] flex items-center justify-center font-bold font-heading">
+                            M
+                        </div>
+                        <h4 class="font-bold text-slate-900">M. Chen</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= LOOKING AHEAD ================= -->
+    <section class="py-20 bg-[#0F1C35] relative overflow-hidden">
+        <!-- Decorative Blur -->
+        <div
+            class="absolute -left-32 top-1/2 -translate-y-1/2 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] pointer-events-none">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div
+                class="reveal reveal-up bg-slate-900/40 border border-slate-800 rounded-3xl p-8 md:p-12 backdrop-blur-sm flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                <div
+                    class="w-20 h-20 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0 border border-blue-500/20">
+                    <i data-lucide="leaf" class="w-10 h-10 text-[#38BDF8]"></i>
+                </div>
+
+                <div>
+                    <h3 class="font-heading text-2xl md:text-3xl font-bold text-white mb-4">
+                        Looking Ahead: Sustainable Sourcing
+                    </h3>
+                    <p class="text-lg text-slate-300 leading-relaxed max-w-3xl">
+                        We are actively expanding our supply network into <strong class="text-white">certified
+                            sustainable textiles and eco-friendly home goods</strong>, bringing greener, ethically
+                        manufactured products to the global market without compromising on durability or value.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <section id="contact" class="py-24 bg-white relative overflow-hidden">
+        <!-- Background Decor -->
+        <div
+            class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-50 rounded-full blur-[100px] opacity-50 -z-10 translate-x-1/2 -translate-y-1/2 pointer-events-none">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+                <div class="reveal reveal-left flex flex-col justify-center">
+                    <h2 class="font-heading text-3xl md:text-5xl font-bold text-slate-900 mb-6">
+                        Let’s Discuss Your Next Project
+                    </h2>
+                    <p class="text-lg text-slate-600 mb-12">
+                        Have questions about custom sourcing or logistics? Our team is ready to assist.
+                    </p>
+
+                    <div class="space-y-8 mb-12">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-12 h-12 bg-blue-50 text-[#0066FF] rounded-xl flex items-center justify-center shrink-0">
+                                <i data-lucide="map-pin" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-900 mb-1">Office Location</h4>
+                                <p class="text-slate-600">Bundaberg, QLD 4670, Australia<br /><span
+                                        class="text-sm">Monday – Friday | 8:00 AM – 5:00 PM (AEST)</span></p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-12 h-12 bg-blue-50 text-[#0066FF] rounded-xl flex items-center justify-center shrink-0">
+                                <i data-lucide="phone" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-900 mb-1">Phone</h4>
+                                <p class="text-slate-600">+61 424 509 143</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-12 h-12 bg-blue-50 text-[#0066FF] rounded-xl flex items-center justify-center shrink-0">
+                                <i data-lucide="mail" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-900 mb-1">Email</h4>
+                                <p class="text-slate-600">jack@ascotradesolutions.com.au</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-6 pt-8 border-t border-slate-200">
+                        <div class="flex items-center gap-2 text-sm font-semibold text-slate-800">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-[#0066FF]"></i> Verified Network
+                        </div>
+                        <div class="flex items-center gap-2 text-sm font-semibold text-slate-800">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-[#0066FF]"></i> ISO Compliant
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal reveal-up">
+                    <div
+                        class="bg-white rounded-3xl p-4 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 h-[500px] lg:h-full min-h-[400px] overflow-hidden relative">
+                        <iframe
+                            src="https://maps.google.com/maps?q=Bundaberg,%20QLD%204670,%20Australia&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                            width="100%" height="100%"
+                            style="border: 0; border-radius: 1rem; position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 1.5rem;"
+                            allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                            title="ASCO Trade Solutions Location"></iframe>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-[#0F1C35] border-t-2 border-[#0066FF] pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+
+                <!-- Brand Col -->
+                <div class="space-y-6">
+                    <a href="#" class="flex items-center gap-2">
+                        <div class="text-[#0066FF]">
+                            <i data-lucide="globe" class="w-8 h-8"></i>
+                        </div>
+                        <span class="font-heading font-bold text-xl text-white tracking-tight">
+                            ASCO <span class="text-[#0066FF]">Trade Solutions</span>
+                        </span>
+                    </a>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Bridging the gap between world-class Chinese manufacturers and global businesses. End-to-end
+                        vetting, quality inspection, and freight.
+                    </p>
+                </div>
+
+                <!-- Links Col -->
+                <div>
+                    <h4 class="font-bold text-white mb-6">Company</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#services"
+                                class="text-slate-400 hover:text-[#38BDF8] text-sm transition-colors">Our Services</a>
+                        </li>
+                        <li><a href="#categories"
+                                class="text-slate-400 hover:text-[#38BDF8] text-sm transition-colors">Product
+                                Categories</a></li>
+                        <li><a href="#process"
+                                class="text-slate-400 hover:text-[#38BDF8] text-sm transition-colors">Sourcing
+                                Process</a></li>
+                        <li><a href="#contact"
+                                class="text-slate-400 hover:text-[#38BDF8] text-sm transition-colors">Contact
+                                Procurement</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal Col -->
+                <div>
+                    <h4 class="font-bold text-white mb-6">Compliance</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-slate-400 hover:text-[#38BDF8] text-sm transition-colors">Terms of
+                                Service</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-[#38BDF8] text-sm transition-colors">Privacy
+                                Policy</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-[#38BDF8] text-sm transition-colors">Trade
+                                Licenses</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-[#38BDF8] text-sm transition-colors">Supplier
+                                Code of Conduct</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social Col -->
+                <div>
+                    <h4 class="font-bold text-white mb-6">Connect</h4>
+                    <div class="flex gap-4">
+                        <a href="#" aria-label="LinkedIn"
+                            class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-[#0066FF] hover:text-white transition-colors">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" aria-label="Twitter"
+                            class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-[#0066FF] hover:text-white transition-colors">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-slate-500 text-sm">
+                    © <span id="year"></span> ASCO Trade Solutions. All rights reserved.
+                </p>
+                <div class="text-slate-500 text-sm">
+                    Designed for Global Enterprise
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lucide Icons Library (via CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- App Logic -->
+    <script>
+        // 1. Initialize Icons
+        lucide.createIcons();
+
+        // 2. Set dynamic year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // 3. Navbar Scroll Effect & Text Color toggling
+        const navbar = document.getElementById('navbar');
+        const navLinksDesktop = document.querySelectorAll('.nav-link');
+        const logoText = document.getElementById('logo-text');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                // Scrolled down state (light navbar -> dark logo text)
+                navbar.classList.add('backdrop-blur-md', 'bg-white/90', 'border-b', 'border-blue-500/10', 'shadow-sm');
+                navbar.classList.remove('bg-transparent');
+
+                // Turn "ASCO" dark
+                logoText.classList.remove('text-white');
+                logoText.classList.add('text-slate-900');
+
+                mobileMenuBtn.classList.remove('text-white');
+                mobileMenuBtn.classList.add('text-slate-900');
+
+                navLinksDesktop.forEach(link => {
+                    link.classList.remove('text-slate-300');
+                    link.classList.add('text-slate-600');
+                    link.classList.replace('hover:text-[#38BDF8]', 'hover:text-[#0066FF]');
+                });
+            } else {
+                // Top state (transparent navbar -> white logo text)
+                navbar.classList.remove('backdrop-blur-md', 'bg-white/90', 'border-b', 'border-blue-500/10', 'shadow-sm');
+                navbar.classList.add('bg-transparent');
+
+                // Turn "ASCO" white
+                logoText.classList.remove('text-slate-900');
+                logoText.classList.add('text-white');
+
+                mobileMenuBtn.classList.add('text-white');
+                mobileMenuBtn.classList.remove('text-slate-900');
+
+                navLinksDesktop.forEach(link => {
+                    link.classList.add('text-slate-300');
+                    link.classList.remove('text-slate-600');
+                    link.classList.replace('hover:text-[#0066FF]', 'hover:text-[#38BDF8]');
+                });
+            }
+        });
+
+
+        // 4. Mobile Menu Toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.querySelector('.menu-icon');
+        const closeIcon = document.querySelector('.close-icon');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        let menuOpen = false;
+
+        function toggleMenu() {
+            menuOpen = !menuOpen;
+            if (menuOpen) {
+                mobileMenu.classList.remove('hidden');
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+                navbar.classList.add('bg-white'); // ensure visible bg
+            } else {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+                if (window.scrollY <= 20) {
+                    navbar.classList.remove('bg-white');
+                }
+            }
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (menuOpen) toggleMenu();
+            });
+        });
+
+        // 5. Process Accordion Logic
+        const accordionItems = document.querySelectorAll('.accordion-item');
+
+        accordionItems.forEach((item, index) => {
+            const button = item.querySelector('button');
+            const content = item.querySelector('.accordion-content');
+            const stepNum = item.querySelector('.step-num');
+            const stepTitle = item.querySelector('.step-title');
+            const chevronIcon = item.querySelector('.chevron-icon');
+
+            button.addEventListener('click', () => {
+                const isOpen = content.classList.contains('expanded');
+
+                // Close all
+                accordionItems.forEach(otherItem => {
+                    const otherContent = otherItem.querySelector('.accordion-content');
+                    otherContent.style.maxHeight = null;
+                    otherContent.classList.remove('expanded');
+
+                    // Reset classes
+                    otherItem.classList.replace('border-[#0066FF]/50', 'border-slate-800');
+                    otherItem.classList.replace('bg-blue-900/10', 'bg-slate-900/30');
+
+                    otherItem.querySelector('.step-num').classList.replace('text-[#38BDF8]', 'text-slate-500');
+                    otherItem.querySelector('.step-title').classList.replace('text-white', 'text-slate-300');
+                    const otherChevron = otherItem.querySelector('.chevron-icon');
+                    otherChevron.classList.remove('rotate-180', 'text-[#38BDF8]');
+                    otherChevron.classList.add('text-slate-500');
+                });
+
+                // Open clicked (if it wasn't already open)
+                if (!isOpen) {
+                    content.classList.add('expanded');
+                    content.style.maxHeight = content.scrollHeight + "px";
+
+                    item.classList.replace('border-slate-800', 'border-[#0066FF]/50');
+                    item.classList.replace('bg-slate-900/30', 'bg-blue-900/10');
+
+                    stepNum.classList.replace('text-slate-500', 'text-[#38BDF8]');
+                    stepTitle.classList.replace('text-slate-300', 'text-white');
+                    chevronIcon.classList.remove('text-slate-500');
+                    chevronIcon.classList.add('rotate-180', 'text-[#38BDF8]');
+                }
+            });
+        });
+
+        // 6. Intersection Observer for Scroll Animations (Replaces Framer Motion)
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const revealOnScroll = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Animates only once like `viewport={{ once: true }}`
+                }
+            });
+        }, revealOptions);
+
+        revealElements.forEach(el => {
+            revealOnScroll.observe(el);
+        });
+
+        // Trigger hero animations instantly on load
+        setTimeout(() => {
+            document.querySelectorAll('#hero .reveal').forEach(el => el.classList.add('active'));
+        }, 100);
+
+    </script>
+</body>
+
+</html>
